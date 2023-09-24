@@ -29,9 +29,9 @@ public class Asteroid : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //When the laser collides with the asteroid, start spawning enemies.
         if (collision.tag == "Laser")
         {
-
             Destroy(collision.gameObject);
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             _spawnManager.StartSpawn();

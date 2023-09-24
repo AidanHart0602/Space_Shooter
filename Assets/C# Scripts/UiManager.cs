@@ -16,11 +16,18 @@ public class UiManager : MonoBehaviour
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
+    [SerializeField]
+    private Text _ammoText;
     private GameManager _gameManager;
+    [SerializeField]
+    private Slider _slider;
+    private Player _player;
 
     // Start is called before the first frame update
     void Start()
     {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _textScore.text = "Score: " + 0;
 
@@ -28,13 +35,13 @@ public class UiManager : MonoBehaviour
         {
             Debug.Log("GAME MANAGER IS NULL");
         }
-        //  _liveSprites[CurrentPlayerLives = 3]
-    }
 
+        _ammoText.text = "Ammunition: " + 15.ToString();
+    }
 
     void Update()
     {
- 
+      
     }
     // Update is called once per frame
     public void UpdateScore(int NewScore)
@@ -52,11 +59,28 @@ public class UiManager : MonoBehaviour
         }
     }
 
+    public void UpdateThrusterSlider(float CurrentThrusterCharge)
+    {
+        _slider.value = Mathf.Clamp(_player._currentThrusterCharge / _player._maxThrusterCharge, 0, 1f);
+
+    }
+
+    public float GetThrustValue()
+    {
+        return _slider.value;
+    }
+
+
     void GameOverCode()
     {
         _gameManager.GameOverReset();
         StartCoroutine(GameOverFlicker());
 
+    }
+
+    public void ammoTextUpdate(int bulletAmount)
+    {
+        _ammoText.text = "Ammunition: " + bulletAmount.ToString();
     }
 
     IEnumerator GameOverFlicker()

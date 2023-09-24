@@ -6,17 +6,29 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 
 {
+    //Number Variables
     [SerializeField]
     private float _speed = 4.0f;
     private float _randomX = 0;
+    private float _laserCooldown;
+
+
+    //Handles from other Scripts
     private Player _player;
     private Animator _anim;
+
+    //Variables that access Information from the object
     private Collider2D _collider2D;
     [SerializeField]
     private GameObject _enemyLaserPrefab;
-    private float _laserCooldown;
+
+
+    //Bools
+    private bool _laserTrigger = true;
+    //Audio
     [SerializeField]
     private AudioSource _audioSource;
+
     void Start()
     {
         
@@ -51,18 +63,8 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         enemyMovement();
+        enemyLaser();
 
-        if (Time.time > _laserCooldown)
-        {
-            float _fireRate = Random.Range(1.5f, 2.0f);
-            _laserCooldown = Time.time + _fireRate;
-            GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
-            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-            for (int i = 0;  i < lasers.Length; i++)
-            {
-                lasers[i].enemyLaserTriggerTrue();
-            }
-        }
     }
 
     void enemyMovement()
@@ -76,11 +78,24 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(_randomX, 6.5f, 0);
         }
     }
-
+    void enemyLaser()
+    {
+        
+        if (Time.time > _laserCooldown && _laserTrigger == true)
+        {
+            float _fireRate = Random.Range(1.5f, 2.0f);
+            _laserCooldown = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].enemyLaserTriggerTrue();
+            }
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
 
-        Debug.Log("The enemy has hit " + other.transform.name);
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>(); 
@@ -90,6 +105,7 @@ public class Enemy : MonoBehaviour
                 if(_anim != null)
                 {
                     _collider2D.enabled = !_collider2D.enabled;
+                    _laserTrigger = false;
                     _speed = 0;
                     _anim.SetTrigger("enemyDeathTrigger");
                     player.Damage();
@@ -97,7 +113,6 @@ public class Enemy : MonoBehaviour
                 }
 
             }
-
             Destroy(gameObject, 2.6f);
         }
         if (other.tag == "Laser")
@@ -107,6 +122,21 @@ public class Enemy : MonoBehaviour
             if (_player != null)  
             {
                  _collider2D.enabled = !_collider2D.enabled;
+                _laserTrigger = false;
+                _speed = 0;
+                _anim.SetTrigger("enemyDeathTrigger");
+                _player.addScore(10);
+                _audioSource.Play();
+
+            }
+            Destroy(this.gameObject, 2.6f);
+        }
+        if (other.tag == "GiantLaser")
+        {
+            if (_player != null)
+            {
+                _collider2D.enabled = !_collider2D.enabled;
+                _laserTrigger = false;
                 _speed = 0;
                 _anim.SetTrigger("enemyDeathTrigger");
                 _player.addScore(10);

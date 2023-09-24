@@ -32,20 +32,25 @@ public class PowerUp : MonoBehaviour
             switch (PowerUpID)
             {
                 case 0:
-                    player.tripleShotActive();
-                    PowerUpSpeed = 0;            
+                    player.tripleShotActive();   
                     break;
                 case 1:
                     player.speedBoostActive();
-                    PowerUpSpeed = 0;  
                     break;
                 case 2:
                     player.shieldActive();
-                    PowerUpSpeed = 0;         
+                    break;
+                case 3:
+                    player.medKitActive();
+                    break;
+                case 4:
+                    player.giantLaserActive();
+                    break;
+                case 5:
+                    player.ammoPowerUpActive();
                     break;
                 default:
                     Debug.Log("Default value");
-                    PowerUpSpeed = 0;
                     break;
             }
             Destroy(this.gameObject);

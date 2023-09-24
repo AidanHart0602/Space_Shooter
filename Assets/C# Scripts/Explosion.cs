@@ -16,7 +16,6 @@ public class Explosion : MonoBehaviour
             Debug.LogError("THE AUDIO SOURCE FOR THE EXPLOSION PREFAB IS NULL!");
         }
 
-        
         _audioSource.Play();
         Destroy(this.gameObject, 3f);     
     }
