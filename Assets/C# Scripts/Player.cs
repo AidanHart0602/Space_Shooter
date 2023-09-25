@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
     private float _speedBoostIncrease = 1.6f;
     
     [SerializeField]
-    public int _ammoCount = 15;
+    public int ammoCount = 15;
 
     //Shield Related Variables
     [SerializeField]
@@ -47,10 +47,8 @@ public class Player : MonoBehaviour
     //Thruster related variables 
     [SerializeField]
     private float _thrusterSpeed = 1.5f;
-    [SerializeField]
-    public float _currentThrusterCharge = 0f;
-    [SerializeField]
-    public float _maxThrusterCharge = 100f;
+    public float currentThrusterCharge = 0f;
+    public float maxThrusterCharge = 100f;
     [SerializeField]
     private float _thrusterUsage = 40f;
     private bool _thrusterReady = true;
@@ -117,7 +115,7 @@ public class Player : MonoBehaviour
         PlayerSprint();
         CalculateMovement();
         LaserSpawn();
-        healthUpdate();
+        HealthUpdate();
     }
     void LaserSpawn()
     {
@@ -126,10 +124,10 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && Time.time > _coolDown)
         {
-            if (_ammoCount > 0)
+            if (ammoCount > 0)
             {
-                _ammoCount--;
-                AmmoCount(_ammoCount);
+                ammoCount--;
+                AmmoCount(ammoCount);
 
                 _coolDown = Time.time + _fireRate;
 
@@ -145,7 +143,7 @@ public class Player : MonoBehaviour
                 }
             }
 
-            else if (_ammoCount == 0)
+            else if (ammoCount == 0)
             {
                 AudioSource.PlayClipAtPoint(_outOfAmmoSoundFile, transform.position);
                 return;
@@ -155,16 +153,16 @@ public class Player : MonoBehaviour
 
     public void AmmoCount(int bullets)
     {
-        _ammoCount = bullets;
-        _uiManager.ammoTextUpdate(_ammoCount);
+        ammoCount = bullets;
+        _uiManager.AmmoTextUpdate(ammoCount);
     }
 
     void CalculateMovement()
     {
-        if(_currentThrusterCharge < _maxThrusterCharge)
+        if(currentThrusterCharge < maxThrusterCharge)
         {
-            _currentThrusterCharge += (_thrusterUsage/2) * Time.deltaTime;
-            _uiManager.UpdateThrusterSlider(_currentThrusterCharge);
+            currentThrusterCharge += (_thrusterUsage/2) * Time.deltaTime;
+            _uiManager.UpdateThrusterSlider(currentThrusterCharge);
         }
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
@@ -202,8 +200,8 @@ public class Player : MonoBehaviour
             if (_uiManager.GetThrustValue() > 0 && _thrusterReady == true)
             {
                 transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * _thrusterSpeed * Time.deltaTime);
-                _currentThrusterCharge -= _thrusterUsage * Time.deltaTime;
-                _uiManager.UpdateThrusterSlider(_currentThrusterCharge);                
+                currentThrusterCharge -= _thrusterUsage * Time.deltaTime;
+                _uiManager.UpdateThrusterSlider(currentThrusterCharge);                
             }
             else
             {
@@ -256,25 +254,25 @@ public class Player : MonoBehaviour
         }
 
     }
-    public void ammoPowerUpActive()
+    public void AmmoPowerUpActive()
     {
-        _ammoCount = _ammoCount + 15;
-        _uiManager.ammoTextUpdate(_ammoCount);
+        ammoCount = ammoCount + 15;
+        _uiManager.AmmoTextUpdate(ammoCount);
     }
-    public void tripleShotActive()
+    public void TripleShotActive()
     {
         _tripleShotTrigger = true;
         StartCoroutine(TripleShotCooldown());
 
     }
 
-    public void speedBoostActive()
+    public void SpeedBoostActive()
     {
         _currentSpeed *= _speedBoostIncrease;
-        StartCoroutine(speedBoostCooldown());
+        StartCoroutine(SpeedBoostCooldown());
     }
 
-    public void shieldActive()
+    public void ShieldActive()
     {
         _shieldTrigger = true;
         _shield.SetActive(true);
@@ -302,14 +300,14 @@ public class Player : MonoBehaviour
             _shieldHealthCount = 3;
         }
     }
-    public void addScore(int points)
+    public void AddScore(int points)
     {
         _score += points;
         _uiManager.UpdateScore(_score);
 
     }
 
-    public void medKitActive()
+    public void MedKitActive()
     {
         if(_playerLives < 3)
         {
@@ -318,7 +316,7 @@ public class Player : MonoBehaviour
         return;
     }
 
-    private void healthUpdate()
+    private void HealthUpdate()
     {
         if(_playerLives == 3)
         {
@@ -332,7 +330,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void giantLaserActive()
+    public void GiantLaserActive()
     {
         _giantLaserPrefab.SetActive(true);
         StartCoroutine(GiantLaserCooldown());
@@ -355,7 +353,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         _tripleShotTrigger = false;
     }
-    IEnumerator speedBoostCooldown()
+    IEnumerator SpeedBoostCooldown()
     {
         yield return new WaitForSeconds(8.0f);
         _currentSpeed = _baseSpeed;

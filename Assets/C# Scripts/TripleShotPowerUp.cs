@@ -6,11 +6,11 @@ using UnityEngine;
 public class TripleShotPowerUp : MonoBehaviour
 {
     [SerializeField]
-    private float PowerUpSpeed = 3.0f;
+    private float _powerUpSpeed = 3.0f;
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * PowerUpSpeed * Time.deltaTime);
+        transform.Translate(Vector3.down * _powerUpSpeed * Time.deltaTime);
 
         if(transform.position.y < -7)
         {
@@ -25,7 +25,7 @@ public class TripleShotPowerUp : MonoBehaviour
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
-                player.tripleShotActive();
+                player.TripleShotActive();
             }
             Destroy(this.gameObject);
         } 

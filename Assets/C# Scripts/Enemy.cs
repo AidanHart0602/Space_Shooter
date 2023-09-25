@@ -62,12 +62,12 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemyMovement();
-        enemyLaser();
+        EnemyMovement();
+        EnemyLaser();
 
     }
 
-    void enemyMovement()
+    void EnemyMovement()
     {
         //Move down 4 meters per second
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(_randomX, 6.5f, 0);
         }
     }
-    void enemyLaser()
+    void EnemyLaser()
     {
         
         if (Time.time > _laserCooldown && _laserTrigger == true)
@@ -89,7 +89,7 @@ public class Enemy : MonoBehaviour
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
             for (int i = 0; i < lasers.Length; i++)
             {
-                lasers[i].enemyLaserTriggerTrue();
+                lasers[i].EnemyLaserTriggerTrue();
             }
         }
     }
@@ -125,7 +125,7 @@ public class Enemy : MonoBehaviour
                 _laserTrigger = false;
                 _speed = 0;
                 _anim.SetTrigger("enemyDeathTrigger");
-                _player.addScore(10);
+                _player.AddScore(10);
                 _audioSource.Play();
 
             }
@@ -139,7 +139,7 @@ public class Enemy : MonoBehaviour
                 _laserTrigger = false;
                 _speed = 0;
                 _anim.SetTrigger("enemyDeathTrigger");
-                _player.addScore(10);
+                _player.AddScore(10);
                 _audioSource.Play();
 
             }

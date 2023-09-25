@@ -6,16 +6,16 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     [SerializeField]
-    private float PowerUpSpeed = 3.0f;
+    private float powerUpSpeed = 3.0f;
     [SerializeField]
-    private int PowerUpID;
+    private int powerUpID;
     [SerializeField]
     private AudioClip _collectedAudio;
     // Update is called once per frame
 
     void Update()
     { 
-       transform.Translate(Vector3.down * PowerUpSpeed * Time.deltaTime);
+       transform.Translate(Vector3.down * powerUpSpeed * Time.deltaTime);
 
         if(transform.position.y < -7)
         {
@@ -29,25 +29,25 @@ public class PowerUp : MonoBehaviour
         {
             Player player = other.transform.GetComponent<Player>();
             AudioSource.PlayClipAtPoint(_collectedAudio, transform.position);
-            switch (PowerUpID)
+            switch (powerUpID)
             {
                 case 0:
-                    player.tripleShotActive();   
+                    player.TripleShotActive();   
                     break;
                 case 1:
-                    player.speedBoostActive();
+                    player.SpeedBoostActive();
                     break;
                 case 2:
-                    player.shieldActive();
+                    player.ShieldActive();
                     break;
                 case 3:
-                    player.medKitActive();
+                    player.MedKitActive();
                     break;
                 case 4:
-                    player.giantLaserActive();
+                    player.GiantLaserActive();
                     break;
                 case 5:
-                    player.ammoPowerUpActive();
+                    player.AmmoPowerUpActive();
                     break;
                 default:
                     Debug.Log("Default value");

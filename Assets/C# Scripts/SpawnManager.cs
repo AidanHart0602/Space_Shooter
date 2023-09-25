@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
     private bool _endSpawn = false;
     [SerializeField]
-    private GameObject[] powerup;
+    private GameObject[] powerUp;
     [SerializeField]
     private GameObject _ammoCollectable;
     [SerializeField]
@@ -23,8 +23,8 @@ public class SpawnManager : MonoBehaviour
         
         StartCoroutine(EnemySpawner());
         StartCoroutine(PowerUpSpawner());
-        StartCoroutine(ammoBoxSpawner());
-        StartCoroutine(giantLaserSpawner());
+        StartCoroutine(AmmoBoxSpawner());
+        StartCoroutine(GiantLaserSpawner());
     }
 
     IEnumerator EnemySpawner()
@@ -46,11 +46,11 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 NewPosition = new Vector3((Random.Range(-10.3f, 10.3f)), 7, 0);
             int RandomPowerUp = Random.Range(0, 4);
-            GameObject newEnemy = Instantiate(powerup[RandomPowerUp], NewPosition, Quaternion.identity);
-            yield return new WaitForSeconds(2.0f);
+            GameObject newEnemy = Instantiate(powerUp[RandomPowerUp], NewPosition, Quaternion.identity);
+            yield return new WaitForSeconds(10f);
         }
     }
-    IEnumerator ammoBoxSpawner()
+    IEnumerator AmmoBoxSpawner()
     {
         yield return new WaitForSeconds(5f);
         while(_endSpawn == false)
@@ -61,7 +61,7 @@ public class SpawnManager : MonoBehaviour
         }
         
     }
-    IEnumerator giantLaserSpawner() 
+    IEnumerator GiantLaserSpawner() 
     {
         float randomSpawn = Random.Range(5f, 20f);
         yield return new WaitForSeconds(30f);

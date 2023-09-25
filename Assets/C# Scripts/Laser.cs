@@ -13,14 +13,14 @@ public class Laser : MonoBehaviour
     {
         if (_enemyLaserTrigger == false)
         {
-            playerLaserMovement();
+            PlayerLaserMovement();
         }
         else
         {
-            enemyLaserMovement();
+            EnemyLaserMovement();
         }
     }
-    void playerLaserMovement()
+    void PlayerLaserMovement()
     {
 
         //When the laser is spawned
@@ -38,7 +38,7 @@ public class Laser : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void enemyLaserMovement()
+    void EnemyLaserMovement()
     {
         //When the laser is spawned
         //translate laser down
@@ -67,7 +67,7 @@ public class Laser : MonoBehaviour
        
         }
     }
-    public void enemyLaserTriggerTrue()
+    public void EnemyLaserTriggerTrue()
     {
         _enemyLaserTrigger = true;
     }

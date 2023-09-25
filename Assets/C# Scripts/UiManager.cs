@@ -61,7 +61,7 @@ public class UiManager : MonoBehaviour
 
     public void UpdateThrusterSlider(float CurrentThrusterCharge)
     {
-        _slider.value = Mathf.Clamp(_player._currentThrusterCharge / _player._maxThrusterCharge, 0, 1f);
+        _slider.value = Mathf.Clamp(_player.currentThrusterCharge / _player.maxThrusterCharge, 0, 1f);
 
     }
 
@@ -78,7 +78,7 @@ public class UiManager : MonoBehaviour
 
     }
 
-    public void ammoTextUpdate(int bulletAmount)
+    public void AmmoTextUpdate(int bulletAmount)
     {
         _ammoText.text = "Ammunition: " + bulletAmount.ToString();
     }
