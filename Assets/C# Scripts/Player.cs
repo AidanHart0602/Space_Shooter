@@ -164,7 +164,12 @@ public class Player : MonoBehaviour
 
         transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
 
+        BoundsCheck();
 
+    }
+
+    void BoundsCheck()
+    {
         if (transform.position.y < -4.6f)
         {
             transform.position = new Vector3(transform.position.x, -4.6f, 0);
@@ -184,6 +189,7 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(10.3f, transform.position.y, 0);
         }
     }
+
 
     void LaserSpawn()
     {
