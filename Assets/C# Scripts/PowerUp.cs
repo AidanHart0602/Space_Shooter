@@ -11,8 +11,9 @@ public class PowerUp : MonoBehaviour
     private int powerUpID;
     [SerializeField]
     private AudioClip _collectedAudio;
-    // Update is called once per frame
 
+    private Enemy _enemy;
+    // Update is called once per frame    
     void Update()
     { 
        transform.Translate(Vector3.down * powerUpSpeed * Time.deltaTime);
@@ -28,6 +29,14 @@ public class PowerUp : MonoBehaviour
        if(other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
+
+            _enemy = GameObject.FindObjectOfType<Enemy>();
+
+            if (_enemy == null)
+            {
+                Debug.LogError("enemy IS NULL");
+            }
+
             AudioSource.PlayClipAtPoint(_collectedAudio, transform.position);
             switch (powerUpID)
             {
@@ -44,10 +53,13 @@ public class PowerUp : MonoBehaviour
                     player.MedKitActive();
                     break;
                 case 4:
-                    player.GiantLaserActive();
+                    _enemy.EnemyTripleLaserActive();
                     break;
                 case 5:
                     player.AmmoPowerUpActive();
+                    break;
+                case 6:
+                    player.GiantLaserActive();
                     break;
                 default:
                     Debug.Log("Default value");

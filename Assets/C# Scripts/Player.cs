@@ -29,9 +29,10 @@ public class Player : MonoBehaviour
     private int _playerLives = 3;
     [SerializeField]
     private float _speedBoostIncrease = 1.6f;
-    
     [SerializeField]
     public int ammoCount = 15;
+    private float horizontalInput = 0;
+    private float verticalInput = 0;
 
     //Shield Related Variables
     [SerializeField]
@@ -63,6 +64,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
     private UiManager _uiManager;
     private CameraShake _cameraShake;
+
     //UI and VFX
     [SerializeField]
     private int _score = 0;
@@ -117,6 +119,72 @@ public class Player : MonoBehaviour
         LaserSpawn();
         HealthUpdate();
     }
+
+    private void PlayerSprint()
+    {
+         horizontalInput = Input.GetAxis("Horizontal");
+         verticalInput = Input.GetAxis("Vertical");
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (_uiManager.GetThrustValue() > 0 && _thrusterReady == true)
+            {
+                transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * _thrusterSpeed * Time.deltaTime);
+                currentThrusterCharge -= _thrusterUsage * Time.deltaTime;
+                _uiManager.UpdateThrusterSlider(currentThrusterCharge);
+            }
+            else
+            {
+                transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * Time.deltaTime);
+            }
+        }
+
+        else if (_uiManager.GetThrustValue() == 0)
+        {
+            transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * Time.deltaTime);
+            _thrusterReady = false;
+            StartCoroutine(ThrusterCooldown());
+            return;
+        }
+    }
+
+
+    void CalculateMovement()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+
+
+        if (currentThrusterCharge < maxThrusterCharge)
+        {
+            currentThrusterCharge += (_thrusterUsage/2) * Time.deltaTime;
+            _uiManager.UpdateThrusterSlider(currentThrusterCharge);
+        }
+
+
+        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
+
+
+        if (transform.position.y < -4.6f)
+        {
+            transform.position = new Vector3(transform.position.x, -4.6f, 0);
+        }
+        else if (transform.position.y > 6)
+        {
+            transform.position = new Vector3(transform.position.x, 6, 0);
+        }
+
+        if (transform.position.x > 10.35f)
+        {
+            transform.position = new Vector3(-10.3f, transform.position.y, 0);
+        }
+
+        else if (transform.position.x < -10.35f)
+        {
+            transform.position = new Vector3(10.3f, transform.position.y, 0);
+        }
+    }
+
     void LaserSpawn()
     {
         //When I hit the space key
@@ -157,66 +225,6 @@ public class Player : MonoBehaviour
         _uiManager.AmmoTextUpdate(ammoCount);
     }
 
-    void CalculateMovement()
-    {
-        if(currentThrusterCharge < maxThrusterCharge)
-        {
-            currentThrusterCharge += (_thrusterUsage/2) * Time.deltaTime;
-            _uiManager.UpdateThrusterSlider(currentThrusterCharge);
-        }
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
-
-
-        if (transform.position.y < -4.6f)
-        {
-            transform.position = new Vector3(transform.position.x, -4.6f, 0);
-        }
-        else if (transform.position.y > 6)
-        {
-            transform.position = new Vector3(transform.position.x, 6, 0);
-        }
-
-        if (transform.position.x > 10.35f)
-        {
-            transform.position = new Vector3(-10.3f, transform.position.y, 0);
-        }
-
-        else if (transform.position.x < -10.35f)
-        {
-            transform.position = new Vector3(10.3f, transform.position.y, 0);
-        }
-    }
-
-    private void PlayerSprint()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            if (_uiManager.GetThrustValue() > 0 && _thrusterReady == true)
-            {
-                transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * _thrusterSpeed * Time.deltaTime);
-                currentThrusterCharge -= _thrusterUsage * Time.deltaTime;
-                _uiManager.UpdateThrusterSlider(currentThrusterCharge);                
-            }
-            else
-            {
-                transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * Time.deltaTime);
-            }
-        }
-
-        else if (_uiManager.GetThrustValue() == 0)
-        {
-            transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * Time.deltaTime);
-            _thrusterReady = false;
-            StartCoroutine(ThrusterCooldown());
-            return;
-        }
-    }
     public void Damage()
     {
         StartCoroutine(_cameraShake.ShakeTheCamera());
