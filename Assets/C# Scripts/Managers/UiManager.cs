@@ -70,20 +70,37 @@ public class UiManager : MonoBehaviour
         }
     }
 
-    public void UpdateThrusterSlider(float CurrentThrusterCharge)
+    public void UpdateThrusterSlider(float DeltaTime)
     {
-        _slider.value = Mathf.Clamp(_player.currentThrusterCharge / _player.maxThrusterCharge, 0, 1f);
+        //   _slider.value = Mathf.Clamp(_player.currentThrusterCharge / _player.maxThrusterCharge, 0, 1f);
+
+        _slider.value -= DeltaTime / 5f;
     }
 
-    public float GetThrustValue()
+    public bool RequestThrust() 
     {
-        return _slider.value;
+        return _slider.value > 0;
+
+    }
+    public void RechargeThruster() 
+    {
+        StartCoroutine(RechargeThrusterRoutine());
     }
 
     IEnumerator DisableWaveText()
     { 
             yield return new WaitForSeconds(3.0f);
             _waveText.gameObject.SetActive(false);
+    }
+
+    IEnumerator RechargeThrusterRoutine() 
+    {
+        while (_slider.value < 1f) 
+        {
+
+            _slider.value += Time.deltaTime / 10f;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     void GameOverCode()

@@ -47,14 +47,13 @@ public class Player : MonoBehaviour
 
     //Thruster related variables 
     [SerializeField]
-    private float _thrusterSpeed = 1.5f;
+    private float _thrusterSpeed = 8f;
     public float currentThrusterCharge = 0f;
     public float maxThrusterCharge = 100f;
     [SerializeField]
     private float _thrusterUsage = 40f;
-    private bool _thrusterReady = true;
-
-
+    private bool _canThrust = true;
+            
     //triggers & bools
     private bool _tripleShotTrigger = false;
 
@@ -114,59 +113,50 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerSprint();
         CalculateMovement();
         LaserSpawn();
         HealthUpdate();
     }
-
-    private void PlayerSprint()
-    {
-         horizontalInput = Input.GetAxis("Horizontal");
-         verticalInput = Input.GetAxis("Vertical");
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            if (_uiManager.GetThrustValue() > 0 && _thrusterReady == true)
-            {
-                transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * _thrusterSpeed * Time.deltaTime);
-                currentThrusterCharge -= _thrusterUsage * Time.deltaTime;
-                _uiManager.UpdateThrusterSlider(currentThrusterCharge);
-            }
-            else
-            {
-                transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * Time.deltaTime);
-            }
-        }
-
-        else if (_uiManager.GetThrustValue() == 0)
-        {
-            transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _baseSpeed * Time.deltaTime);
-            _thrusterReady = false;
-            StartCoroutine(ThrusterCooldown());
-            return;
-        }
-    }
-
-
     void CalculateMovement()
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-
-        if (currentThrusterCharge < maxThrusterCharge)
-        {
-            currentThrusterCharge += (_thrusterUsage/2) * Time.deltaTime;
-            _uiManager.UpdateThrusterSlider(currentThrusterCharge);
-        }
-
-
         transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
 
         BoundsCheck();
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (_uiManager.RequestThrust() == true) 
+            {
+                _canThrust = true;
+                Thrusters();
+            }
+            else
+            {
+                _canThrust = false;
+                _currentSpeed = _baseSpeed;
+            }
+
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift)) 
+        {
+            _canThrust = false;    
+            _currentSpeed = _baseSpeed;
+            _uiManager.RechargeThruster();
+        }
     }
+    void Thrusters() 
+    {
+        if (_canThrust == true)
+        {
+            _currentSpeed = _thrusterSpeed;
+            _uiManager.UpdateThrusterSlider(Time.deltaTime);
+        }
+    }
+
 
     void BoundsCheck()
     {
@@ -352,8 +342,9 @@ public class Player : MonoBehaviour
 
     IEnumerator ThrusterCooldown() 
     {
+      //  _thrusterReady = false;
         yield return new WaitForSeconds(3.0f);
-        _thrusterReady = true;
+      //  _thrusterReady = true;
     }
 
     IEnumerator GiantLaserCooldown()
@@ -364,6 +355,7 @@ public class Player : MonoBehaviour
 
     IEnumerator TripleShotCooldown()
     {
+        
         yield return new WaitForSeconds(5.0f);
         _tripleShotTrigger = false;
     }
