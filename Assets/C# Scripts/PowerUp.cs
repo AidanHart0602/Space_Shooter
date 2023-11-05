@@ -6,21 +6,37 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     [SerializeField]
-    private float powerUpSpeed = 3.0f;
+    private float _powerUpBaseSpeed = 3.0f;
+    [SerializeField]
+    private float _powerUpCurrentSpeed = 3.0f;
+
     [SerializeField]
     private int powerUpID;
     [SerializeField]
     private AudioClip _collectedAudio;
 
-    private Enemy _enemy;
+    private SecondEnemy _secondEnemy;
+    private SmartEnemy _smartEnemy;
+
     // Update is called once per frame    
+
     void Update()
     { 
-       transform.Translate(Vector3.down * powerUpSpeed * Time.deltaTime);
+       transform.Translate(Vector3.down * _powerUpCurrentSpeed * Time.deltaTime);
 
         if(transform.position.y < -7)
         {
             Destroy(gameObject);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _powerUpCurrentSpeed *= 2f;
+        }
+        
+        else if (Input.GetKeyUp(KeyCode.C))
+        {
+            _powerUpCurrentSpeed = _powerUpBaseSpeed;
         }
     }
 
@@ -29,14 +45,6 @@ public class PowerUp : MonoBehaviour
        if(other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
-
-            _enemy = GameObject.FindObjectOfType<Enemy>();
-
-            if (_enemy == null)
-            {
-                Debug.LogError("enemy IS NULL");
-            }
-
             AudioSource.PlayClipAtPoint(_collectedAudio, transform.position);
             switch (powerUpID)
             {
@@ -50,16 +58,19 @@ public class PowerUp : MonoBehaviour
                     player.ShieldActive();
                     break;
                 case 3:
-                    player.MedKitActive();
+                    Enemy._tripleLaserShotTrigger = true;
                     break;
                 case 4:
-                    _enemy.EnemyTripleLaserActive();
+                    player.AmmoPowerUpActive();
                     break;
                 case 5:
-                    player.AmmoPowerUpActive();
+                    player.MedKitActive();
                     break;
                 case 6:
                     player.GiantLaserActive();
+                    break;
+                case 7:
+                    player.HomingMissileActive();
                     break;
                 default:
                     Debug.Log("Default value");
@@ -67,6 +78,17 @@ public class PowerUp : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
+        if (other.CompareTag("ELaser")) 
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
 
+    IEnumerator TripleLaserCoolDown()
+    {
+        Enemy._tripleLaserShotTrigger = true;
+        yield return new WaitForSeconds(3.0f);
+        Enemy._tripleLaserShotTrigger = false;
     }
 }

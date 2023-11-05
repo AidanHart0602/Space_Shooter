@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 438458866523913077}
   - component: {fileID: 5858815627216213163}
   - component: {fileID: 7091645368758399134}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Ammo_Collectable
-  m_TagString: Untagged
+  m_TagString: Power Up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,8 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968c0a9fb7e42cf499e3313da577e569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpSpeed: 3
-  powerUpID: 5
+  _powerUpBaseSpeed: 3
+  _powerUpCurrentSpeed: 3
+  powerUpID: 4
   _collectedAudio: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!50 &5858815627216213163
 Rigidbody2D:

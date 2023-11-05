@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7887665385871080333}
   - component: {fileID: 5355730684651388088}
   - component: {fileID: 3053238237426735266}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -55,6 +55,10 @@ MonoBehaviour:
   _enemyTripleLaserPrefab: {fileID: 3325058460721558891, guid: 759e1049245aa50479dfdb0763c32a46,
     type: 3}
   _enemyShield: {fileID: 5412301068469088741}
+  _powerUp:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _audioSource: {fileID: 7887665385871080333}
 --- !u!212 &-148704952652337164
 SpriteRenderer:
@@ -234,7 +238,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.015213847, y: 0.045640886}
@@ -282,7 +286,7 @@ GameObject:
   - component: {fileID: 1242833257947892101}
   - component: {fileID: 5686413776532159762}
   - component: {fileID: 5057845458406793287}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: EnemyShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}

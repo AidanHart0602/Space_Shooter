@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _secondEnemyPrefab;
     [SerializeField]
+    private GameObject _smartEnemyPrefab;
+    [SerializeField]
     private GameObject _enemyContainer;
     private bool _endSpawn = false;
     [SerializeField]
@@ -16,13 +18,18 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _ammoCollectable;
 
+
+    [SerializeField]
+    private GameObject _bossPrefab;
+
     private UiManager _uiManager;
     public int currentWave = 0;
     public int enemyLimit = 0;
+    [SerializeField]
     public int enemiesLeft = 0;
     public bool waveStart = false;
     private float _spawnIncrease = 0f;
-
+    private int enemiesSpawned = 0;
     void Start()
     {
         currentWave = 0;
@@ -49,12 +56,10 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(PowerUpSpawner());
         StartCoroutine(AmmoBoxSpawner());
         StartCoroutine(RarePowerUps());
-        waveStart = false;
         enemiesLeft = enemyLimit;
     }
     private void StartWave()
     {
-        StartCoroutine(WaveCooldown());
         _endSpawn = false;
         enemiesLeft = enemyLimit;
         StartSpawn();
@@ -63,15 +68,22 @@ public class SpawnManager : MonoBehaviour
     public void EndWave()
     {
         currentWave += 1;
+        _uiManager.UpdateWaves(currentWave);
+        if (currentWave == 4)
+        {
+            waveStart = false;
+            Instantiate(_bossPrefab, new Vector3(0, 9, 0), Quaternion.identity);
+            return;
+        }
         enemyLimit += 10;
         _spawnIncrease += 0.2f;
-        _uiManager.UpdateWaves(currentWave);
+        
         StartWave();
     }
 
     IEnumerator EnemySpawner()
     {
-        int enemiesSpawned = 0;
+        
         yield return new WaitForSeconds(0.5f);
         while (_endSpawn == false)
         {
@@ -84,7 +96,11 @@ public class SpawnManager : MonoBehaviour
                 {
                     Vector3 position = new Vector3((Random.Range(-10.3f, 10.3f)),7, 0);
                    Instantiate(_secondEnemyPrefab, position, Quaternion.identity);
-                    enemiesSpawned++;
+                }
+                if (currentWave == 3) 
+                {
+                    Vector3 position  = new Vector3((Random.Range(-10.3f, 10.3f)), 7, 0);
+                    Instantiate(_smartEnemyPrefab, position, Quaternion.identity);
                 }
                 newEnemy.transform.parent = _enemyContainer.transform;
                 yield return new WaitForSeconds(2.5f - _spawnIncrease);
@@ -99,11 +115,6 @@ public class SpawnManager : MonoBehaviour
             }
             yield return new WaitForSeconds(1.0f);           
         }
-    }
-
-    IEnumerator WaveCooldown() 
-    {
-        yield return new WaitForSeconds(2.0f);
     }
 
     IEnumerator PowerUpSpawner()
@@ -130,16 +141,18 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator RarePowerUps() 
     {
-        float randomSpawn = Random.Range(20f, 40f);
-        yield return new WaitForSeconds(40f);
+        float randomSpawn = Random.Range(20f, 30f);
+        yield return new WaitForSeconds(10f);
         while(_endSpawn == false)
         {
-            int HealthAndGiantLaser = Random.Range(5, 6);
+            int RarePowerUp = Random.Range(5, 8);
             Vector3 NewPosition = new Vector3((Random.Range(-10.3f, 10.3f)), 7, 0);
-            GameObject newEnemy = Instantiate(powerUp[HealthAndGiantLaser], NewPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(powerUp[RarePowerUp], NewPosition, Quaternion.identity);
             yield return new WaitForSeconds(randomSpawn);
         }
     }
+
+
     public void PlayerDeath()
     {
         _endSpawn = true;

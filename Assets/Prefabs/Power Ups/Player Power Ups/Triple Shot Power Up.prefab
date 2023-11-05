@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 1103094461012795413}
   - component: {fileID: 1103094461012795412}
   - component: {fileID: -6455739617616509065}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Triple Shot Power Up
-  m_TagString: TripleShot
+  m_TagString: Power Up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,6 +50,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -134,12 +135,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968c0a9fb7e42cf499e3313da577e569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PowerUpSpeed: 3
-  PowerUpID: 0
+  powerUpSpeed: 3
+  powerUpID: 0
   _collectedAudio: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!95 &-6455739617616509065
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -152,7 +153,9 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

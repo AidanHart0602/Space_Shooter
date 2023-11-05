@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8385253152460015753}
   - component: {fileID: 3829219677452095149}
   - component: {fileID: 3896822265671504831}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Laser
-  m_TagString: Laser
+  m_TagString: ELaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
-  _enemyLaserTrigger: 0
+  _enemyLaserTrigger: 1
 --- !u!212 &8385253152460015753
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 3019140385179301806}
   m_Layer: 0
   m_Name: EnemyLaser
-  m_TagString: Untagged
+  m_TagString: ELaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

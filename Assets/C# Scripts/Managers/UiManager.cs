@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 public class UiManager : MonoBehaviour
 {
+    private Player _player;
     [SerializeField]
     private TMP_Text _textScore;
     [SerializeField]
@@ -20,22 +21,24 @@ public class UiManager : MonoBehaviour
     private TMP_Text _ammoText;
     private GameManager _gameManager;
     [SerializeField]
-    private Slider _slider;
-    private Player _player;
+    private Slider _thrusterSlider;
     [SerializeField]
     private TMP_Text _waveText;
-
+    [SerializeField]
+    private Slider _bossHealthSlider;
+    [SerializeField]
+    private TMP_Text _finalMessage;
     // Start is called before the first frame update
     void Start()
     {
-
+        _finalMessage.gameObject.SetActive(false);
         _waveText.gameObject.SetActive(false);
         _player = GameObject.Find("Player").GetComponent<Player>();
 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _textScore.text = "Score: " + 0;
 
-        if(_gameManager == null)
+        if (_gameManager == null)
         {
             Debug.Log("GAME MANAGER IS NULL");
         }
@@ -43,13 +46,15 @@ public class UiManager : MonoBehaviour
         _ammoText.text = "Ammunition: " + 15.ToString();
     }
 
-    void Update()
+    public void UpdateWaves(int CurrentWave)
     {
-      
-    }
-
-    public void UpdateWaves(int CurrentWave) 
-    {
+        if (CurrentWave == 4)
+        {
+            _waveText.text = "Final Wave";
+            _waveText.gameObject.SetActive(true);
+            StartCoroutine(DisableWaveText());
+            return;
+        }
         _waveText.text = "Wave " + CurrentWave + " incoming!";
         _waveText.gameObject.SetActive(true);
         StartCoroutine(DisableWaveText());
@@ -60,47 +65,62 @@ public class UiManager : MonoBehaviour
         _textScore.text = "Score: " + NewScore.ToString();
     }
 
-    public void UpdateLives(int currentLives) 
+    public void UpdateLives(int currentLives)
     {
         _liveImage.sprite = _liveSprites[currentLives];
 
-        if(currentLives == 0)
+        if (currentLives == 0)
         {
-            GameOverCode();            
+            GameOverCode();
         }
     }
 
     public void UpdateThrusterSlider(float DeltaTime)
     {
-        //   _slider.value = Mathf.Clamp(_player.currentThrusterCharge / _player.maxThrusterCharge, 0, 1f);
 
-        _slider.value -= DeltaTime / 5f;
+        _thrusterSlider.value -= DeltaTime / 5f;
     }
+
+    public void RechargeThruster()
+    {
+        StartCoroutine(RechargeThrusterRoutine());
+    }
+
+    public void ActivateBossSlider() 
+    {
+        _bossHealthSlider.gameObject.SetActive(true);
+    }
+
+    public void UpdateBossHealth(float hp)
+    {
+        _bossHealthSlider.value = hp * 0.05f;
+
+        if (hp == 0) 
+        {
+            _bossHealthSlider.gameObject.SetActive(false);
+            _finalMessage.gameObject.SetActive(true);
+        }
+    }
+
 
     public bool RequestThrust() 
     {
-        return _slider.value > 0;
+        return _thrusterSlider.value > 0;
 
     }
-    public void RechargeThruster() 
+    IEnumerator RechargeThrusterRoutine()
     {
-        StartCoroutine(RechargeThrusterRoutine());
+        while (_thrusterSlider.value < 1f)
+        {
+            _thrusterSlider.value += Time.deltaTime / 10f;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     IEnumerator DisableWaveText()
     { 
             yield return new WaitForSeconds(3.0f);
             _waveText.gameObject.SetActive(false);
-    }
-
-    IEnumerator RechargeThrusterRoutine() 
-    {
-        while (_slider.value < 1f) 
-        {
-
-            _slider.value += Time.deltaTime / 10f;
-            yield return new WaitForEndOfFrame();
-        }
     }
 
     void GameOverCode()
@@ -114,7 +134,8 @@ public class UiManager : MonoBehaviour
     {
         _ammoText.text = "Ammunition: " + bulletAmount.ToString();
     }
-
+        
+    
 
     IEnumerator GameOverFlicker()
     {

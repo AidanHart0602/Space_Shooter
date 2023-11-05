@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 1048305814489039520}
   - component: {fileID: 6272174757067982869}
   - component: {fileID: 125430512}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Speed Boost Power Up
-  m_TagString: Untagged
+  m_TagString: Power Up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968c0a9fb7e42cf499e3313da577e569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpSpeed: 3
+  _powerUpBaseSpeed: 3
+  _powerUpCurrentSpeed: 3
   powerUpID: 1
   _collectedAudio: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!50 &1048305814489039520
@@ -132,7 +133,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.06311107, y: 0.29977632}

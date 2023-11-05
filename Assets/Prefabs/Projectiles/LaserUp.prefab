@@ -98,6 +98,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser
       objectReference: {fileID: 0}
+    - target: {fileID: 8273872828425788589, guid: f546139d4bf65f445a8571a305f7472a,
+        type: 3}
+      propertyPath: m_TagString
+      value: ELaser
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6782598231753907801, guid: f546139d4bf65f445a8571a305f7472a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f546139d4bf65f445a8571a305f7472a, type: 3}

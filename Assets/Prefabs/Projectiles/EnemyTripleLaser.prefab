@@ -46,9 +46,9 @@ GameObject:
   - component: {fileID: 253763948516930880}
   - component: {fileID: 466801896007654022}
   - component: {fileID: 5174092012228276233}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left Laser
-  m_TagString: Laser
+  m_TagString: ELaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5539845097934809759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63b07f7ed0f0cc4296e3eac67eefe35, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ef52990964dc8d4b8c5cccc3f2bd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
@@ -182,9 +182,9 @@ GameObject:
   - component: {fileID: 3427237757034728798}
   - component: {fileID: 7995444900268198778}
   - component: {fileID: 7909960249030268520}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right Laser
-  m_TagString: Laser
+  m_TagString: ELaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5826417129058698888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63b07f7ed0f0cc4296e3eac67eefe35, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ef52990964dc8d4b8c5cccc3f2bd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
@@ -318,9 +318,9 @@ GameObject:
   - component: {fileID: 2873743373935136326}
   - component: {fileID: 1661987771196211080}
   - component: {fileID: 2938971349861487358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Middle Laser
-  m_TagString: Laser
+  m_TagString: ELaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7804366884620133583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63b07f7ed0f0cc4296e3eac67eefe35, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ef52990964dc8d4b8c5cccc3f2bd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8

@@ -680,7 +680,7 @@ Transform:
   m_GameObject: {fileID: 6568433966043167814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 8690767601957624106}
   - {fileID: 3689780770944441474}
@@ -731,7 +731,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 262581973
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1b4a8fdd39d3a45d0a9ee484ad6800ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -762,20 +762,23 @@ MonoBehaviour:
   _deathExplosionPrefab: {fileID: 9183112141503018025, guid: 5bfa4318f5eedde49a28f94c61e63831,
     type: 3}
   _giantLaserPrefab: {fileID: 1479326961}
+  _homingMissile: {fileID: 5708232820959818366, guid: 00dff437ce60fca4698e977c41c3307f,
+    type: 3}
   _baseSpeed: 4
   _currentSpeed: 4
   _fireRate: 0.5
   _playerLives: 3
   _speedBoostIncrease: 1.6
-  ammoCount: 15
+  ammoCount: 999
   _shield: {fileID: 4139406835967221666}
   _damagedShield: {fileID: 447863398}
   _criticalShield: {fileID: 621487174}
   _shieldTrigger: 0
-  _thrusterSpeed: 1.5
-  currentThrusterCharge: 0
-  maxThrusterCharge: 100
-  _thrusterUsage: 40
+  _thrusterSpeed: 8
+  _canThrust: 1
+  _tripleShotTrigger: 0
+  _bossBorderTrigger: 0
+  _waveTesting: 1
   _score: 0
   _leftThrustor: {fileID: 3230176565972742426}
   _rightThrustor: {fileID: 8219190536425567486}
@@ -791,7 +794,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.012557268, y: -0.06687856}

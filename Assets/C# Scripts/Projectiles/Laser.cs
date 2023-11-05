@@ -44,7 +44,6 @@ public class Laser : MonoBehaviour
     void EnemyLaserMovement()
     {
 
-
             //translate laser down
             transform.Translate(Vector3.down * _laserSpeed * Time.deltaTime);
 
@@ -60,25 +59,28 @@ public class Laser : MonoBehaviour
             }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = collision.GetComponent<Player>();
-        if(collision.tag == "Player" && _enemyLaserTrigger == true)
+        Player player = other.GetComponent<Player>();
+        if (other.tag == "Player" && _enemyLaserTrigger == true)
         {
-            if(player != null)
+            if (player != null)
             {
                 player.Damage();
             }
-       
+            Destroy(gameObject);
+        }
+
+        if (other.tag == "Power Up" && _enemyLaserTrigger == true) 
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+
         }
     }
 
-
-
-
     public void EnemyLaserTriggerTrue()
     {
-        Debug.Log("LaserTrigger activated");
         _enemyLaserTrigger = true;
     }
 }

@@ -7,6 +7,8 @@ public class SmartEnemy : MonoBehaviour
     //Number Variables
     [SerializeField]
     private float _smartEnemySpeed = 1.0f;
+    [SerializeField]
+    private float _dodgeSpeed = 1f;
     private float _randomX = 0;
     private float _smartLaserCooldown;
 
@@ -24,12 +26,17 @@ public class SmartEnemy : MonoBehaviour
     private GameObject _enemyTripleLaserPrefab;
     [SerializeField]
     private GameObject _laserUpPrefab;
+    [SerializeField]
+    private GameObject _enemyDodgeCollider;
 
     //Bools
     private bool _laserBool = true;
     private static bool _tripleLaserShotTrigger = false;
     private bool _canFire = true;
+    private bool _dodge = true;
 
+    //Vector3 Variables
+    private Vector3 _movement;
 
     //Audio
     [SerializeField]
@@ -37,6 +44,8 @@ public class SmartEnemy : MonoBehaviour
 
     void Start()
     {
+        _movement = Vector3.down * _smartEnemySpeed * Time.deltaTime;
+
         _collider2D = GetComponent<Collider2D>();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -77,19 +86,14 @@ public class SmartEnemy : MonoBehaviour
             SmartLaser();
         }
         RegularLaser();
+
     }
 
     void EnemyMovement()
     {
-        //Move down 4 meters per second
-        transform.Translate(Vector3.down * _smartEnemySpeed * Time.deltaTime);
+        transform.Translate(_movement);
         //When at the bottom of the screen, respawn at top
         if (transform.position.y < -5)
-        {
-            _randomX = (Random.Range(-10.3f, 10.3f));
-            transform.position = new Vector3(_randomX, 6.5f, 0);
-        }
-        if (transform.position.x > 10.7f || transform.position.x < -10.7f)
         {
             _randomX = (Random.Range(-10.3f, 10.3f));
             transform.position = new Vector3(_randomX, 6.5f, 0);
@@ -131,7 +135,7 @@ public class SmartEnemy : MonoBehaviour
             }
         }
 
-        else if (_tripleLaserShotTrigger == false)
+        else
         {
             if (Time.time > _smartLaserCooldown && _laserBool == true)
             {
@@ -152,7 +156,31 @@ public class SmartEnemy : MonoBehaviour
         StartCoroutine(TripleLaserShotCooldown());
     }
 
+    public void enableDodge()
+    {
+        int randomNum = Random.Range(0, 2);
+        while (_dodge == true)
+        {
+            if (randomNum == 0)
+            {
+                _movement = Vector3.left * _dodgeSpeed * Time.deltaTime;
+            }
 
+            if (randomNum == 1)
+            {
+                _movement = Vector3.right * _dodgeSpeed * Time.deltaTime;
+            }
+
+            StartCoroutine(DodgeCooldown());
+        }
+    }
+    IEnumerator DodgeCooldown()
+    {
+        _dodge = false;
+        yield return new WaitForSeconds(1.0f);
+        _movement = Vector3.down * _smartEnemySpeed * Time.deltaTime;
+        _dodge = true;
+    }
     IEnumerator TripleLaserShotCooldown()
     {
         _tripleLaserShotTrigger = true;
@@ -179,10 +207,10 @@ public class SmartEnemy : MonoBehaviour
                     _spawnManager.enemiesLeft--;
                     _player.Damage();
                     _audioSource.Play();
+                    Destroy(gameObject, 2.6f);
                 }
-
             }
-            Destroy(gameObject, 2.6f);
+            
         }
         if (other.tag == "Laser")
         {
@@ -198,9 +226,25 @@ public class SmartEnemy : MonoBehaviour
                 _spawnManager.enemiesLeft--;
                 _player.AddScore(10);
                 _audioSource.Play();
-
+                Destroy(this.gameObject, 2.6f);
             }
-            Destroy(this.gameObject, 2.6f);
+            
+        }
+        if (other.tag == "HomingMissile")
+        {
+            if (_player != null) 
+            {
+                _collider2D.enabled = !_collider2D.enabled;
+                _canFire = false;
+                _laserBool = false;
+                _spawnManager.enemiesLeft--;
+                _smartEnemySpeed = 0;
+                _anim.SetTrigger("enemyDeathTrigger");
+                _player.AddScore(10);
+                _audioSource.Play();
+                Destroy(other.gameObject);
+                Destroy(this.gameObject, 2.6f);
+            }
         }
         if (other.tag == "GiantLaser")
         {
@@ -214,9 +258,9 @@ public class SmartEnemy : MonoBehaviour
                 _anim.SetTrigger("enemyDeathTrigger");
                 _player.AddScore(10);
                 _audioSource.Play();
-
+                Destroy(this.gameObject, 2.6f);
             }
-            Destroy(this.gameObject, 2.6f);
+
         }
     }
 

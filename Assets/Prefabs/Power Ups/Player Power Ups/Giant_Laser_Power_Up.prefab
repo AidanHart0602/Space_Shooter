@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 8587758636411172840}
   - component: {fileID: 7284250323122417452}
   - component: {fileID: 7546429721184591564}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Giant_Laser_Power_Up
-  m_TagString: Untagged
+  m_TagString: Power Up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

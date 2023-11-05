@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6011733241516206766}
   m_Layer: 0
   m_Name: Enemy Triple Shot
-  m_TagString: Untagged
+  m_TagString: Enemy Triple Shot Power Up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,8 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968c0a9fb7e42cf499e3313da577e569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpSpeed: 3
-  powerUpID: 4
+  _powerUpBaseSpeed: 3
+  _powerUpCurrentSpeed: 3
+  powerUpID: 3
   _collectedAudio: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!61 &1274650137663365321
 BoxCollider2D:

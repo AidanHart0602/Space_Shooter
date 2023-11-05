@@ -76,7 +76,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4322102490341205023}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63b07f7ed0f0cc4296e3eac67eefe35, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ef52990964dc8d4b8c5cccc3f2bd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4391890559039285651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63b07f7ed0f0cc4296e3eac67eefe35, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ef52990964dc8d4b8c5cccc3f2bd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5804653697223004696}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63b07f7ed0f0cc4296e3eac67eefe35, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ef52990964dc8d4b8c5cccc3f2bd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8

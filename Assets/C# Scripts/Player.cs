@@ -10,12 +10,12 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
-    
     [SerializeField]
     private GameObject _deathExplosionPrefab;
     [SerializeField]
     private GameObject _giantLaserPrefab;
-    
+    [SerializeField]
+    private GameObject _homingMissile;
 
     //Player Movements & other values
     [SerializeField]
@@ -48,17 +48,16 @@ public class Player : MonoBehaviour
     //Thruster related variables 
     [SerializeField]
     private float _thrusterSpeed = 8f;
-    public float currentThrusterCharge = 0f;
-    public float maxThrusterCharge = 100f;
     [SerializeField]
-    private float _thrusterUsage = 40f;
     private bool _canThrust = true;
             
     //triggers & bools
+    [SerializeField]
     private bool _tripleShotTrigger = false;
-
-
-
+    private bool _homingMissileTrigger = false;
+    public bool _bossBorderTrigger = false;
+    [SerializeField]
+    private bool _waveTesting = false;
     //Handlers from other scripts
     private SpawnManager _spawnManager;
     private UiManager _uiManager;
@@ -115,7 +114,6 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
         LaserSpawn();
-        HealthUpdate();
     }
     void CalculateMovement()
     {
@@ -168,7 +166,13 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, 6, 0);
         }
-
+        if (_bossBorderTrigger == true)
+        {
+            if (transform.position.y > -1f)
+            {
+                transform.position = new Vector3(transform.position.x, -1, 0);
+            }
+        }
         if (transform.position.x > 10.35f)
         {
             transform.position = new Vector3(-10.3f, transform.position.y, 0);
@@ -191,7 +195,7 @@ public class Player : MonoBehaviour
             if (ammoCount > 0)
             {
                 ammoCount--;
-                AmmoCount(ammoCount);
+                _uiManager.AmmoTextUpdate(ammoCount);
 
                 _coolDown = Time.time + _fireRate;
 
@@ -200,10 +204,18 @@ public class Player : MonoBehaviour
                     Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
                     _audioSource.Play();
                 }
+
+                if (_homingMissileTrigger == true)
+                {
+                    _fireRate = 1f;
+                    Instantiate(_homingMissile, transform.position, Quaternion.identity);
+                }
+
                 else
                 {
                     Instantiate(_laserPrefab, transform.position + (new Vector3(0, 1.2f, 0)), Quaternion.identity);
                     _audioSource.Play();
+                    _fireRate = 0.5f;
                 }
             }
 
@@ -213,12 +225,6 @@ public class Player : MonoBehaviour
                 return;
             }
         }
-    }
-
-    public void AmmoCount(int bullets)
-    {
-        ammoCount = bullets;
-        _uiManager.AmmoTextUpdate(ammoCount);
     }
 
     public void Damage()
@@ -233,25 +239,26 @@ public class Player : MonoBehaviour
             return;
         }
 
-        _playerLives--;
-        _uiManager.UpdateLives(_playerLives);
+        if (_waveTesting == false)
+        {
+            _playerLives--;
+            HealthUpdate();
+            _uiManager.UpdateLives(_playerLives);
+        }
 
 
+        //Check for Damage
         if (_playerLives == 2)
         {
             _rightThrustor.SetActive(true);
-            
         }
 
         else if (_playerLives == 1)
         {
             _leftThrustor.SetActive(true);
-
         }
-
         else if (_playerLives < 1)
         {
-
             _spawnManager.PlayerDeath();
             Instantiate(_deathExplosionPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
@@ -267,7 +274,6 @@ public class Player : MonoBehaviour
     {
         _tripleShotTrigger = true;
         StartCoroutine(TripleShotCooldown());
-
     }
 
     public void SpeedBoostActive()
@@ -316,6 +322,7 @@ public class Player : MonoBehaviour
         if(_playerLives < 3)
         {
             _playerLives = _playerLives + 1;
+            HealthUpdate();
         }
         return;
     }
@@ -339,23 +346,24 @@ public class Player : MonoBehaviour
         _giantLaserPrefab.SetActive(true);
         StartCoroutine(GiantLaserCooldown());
     }
-
-    IEnumerator ThrusterCooldown() 
-    {
-      //  _thrusterReady = false;
-        yield return new WaitForSeconds(3.0f);
-      //  _thrusterReady = true;
-    }
-
     IEnumerator GiantLaserCooldown()
     {
         yield return new WaitForSeconds(5.0f);
         _giantLaserPrefab.SetActive(false);
     }
+    public void HomingMissileActive()
+    {
+        _homingMissileTrigger = true;
+        StartCoroutine(HomingMissileCooldown());
+    }
+    IEnumerator HomingMissileCooldown()
+    {
+        yield return new WaitForSeconds(10.0f);
+        _homingMissileTrigger = false;
+    }
 
     IEnumerator TripleShotCooldown()
-    {
-        
+    { 
         yield return new WaitForSeconds(5.0f);
         _tripleShotTrigger = false;
     }

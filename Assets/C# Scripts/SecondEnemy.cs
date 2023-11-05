@@ -14,8 +14,6 @@ public class SecondEnemy : MonoBehaviour
     private Vector3 _pos;
 
 
-   // private float _laserCooldown;
-
 
     //Handles from other Scripts
     private Player _player;
@@ -76,7 +74,6 @@ public class SecondEnemy : MonoBehaviour
     {
         //Strafe at a speed of 4
         _pos += Vector3.down * _cycleSpeed * Time.deltaTime;
-
         transform.position = _pos + _axis * Mathf.Sin(Time.time * _frequency) * _amplitude;
 
         //When at the bottom of the screen destroy the object
@@ -120,10 +117,9 @@ public class SecondEnemy : MonoBehaviour
                     _laserTrigger = false;
                     _player.Damage();
                     _audioSource.Play();
+                    Destroy(this.gameObject, 2.6f);
                 }
-
             }
-            Destroy(gameObject, 2.6f);
         }
         if (other.tag == "Laser")
         {
@@ -139,9 +135,9 @@ public class SecondEnemy : MonoBehaviour
                 _spawnManager.enemiesLeft--;
                 _player.AddScore(10);
                 _audioSource.Play();
-
+                Destroy(this.gameObject, 2.6f);
             }
-            Destroy(this.gameObject, 2.6f);
+            
         }
         if (other.tag == "GiantLaser")
         {
@@ -156,9 +152,28 @@ public class SecondEnemy : MonoBehaviour
                 _anim.SetTrigger("enemyDeathTrigger");
                 _player.AddScore(10);
                 _audioSource.Play();
-
+                Destroy(this.gameObject, 2.6f);
             }
-            Destroy(this.gameObject, 2.6f);
+
+        }
+        if (other.tag == "HomingMissile")
+        {
+            if (_player != null)
+            {
+                _collider2D.enabled = !_collider2D.enabled;
+                _spawnManager.enemiesLeft--;
+                _cycleSpeed = 0;
+                _amplitude = 0;
+                _frequency = 0;
+                _laserTrigger = false;
+                _anim.SetTrigger("enemyDeathTrigger");
+                _player.AddScore(10);
+                _audioSource.Play();
+                Destroy(other.gameObject);
+                Destroy(this.gameObject, 2.6f);
+            }
+
+
         }
     }
 
